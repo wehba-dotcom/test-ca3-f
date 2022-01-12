@@ -1,6 +1,4 @@
-const URL = "http://localhost:8080/ca3";
-const URL1="https://wehba.alltoone.dk/ca2"
-
+import URL from './setting'
 function handleHttpErrors(res)
 {
     if (!res.ok)
@@ -30,6 +28,8 @@ let apiFacade = () =>
             })
     }
 
+    
+
     const login = (user, password, setLoggedIn, setErrorMessage) =>
     {
         const options = makeOptions("POST", true, { username: user, password: password });
@@ -52,6 +52,63 @@ let apiFacade = () =>
                 }
             });
     }
+
+    const AddBoat = (brand, make,name ,updateAction, setErrorMessage) =>
+    {
+        const options = makeOptions("POST", true, { brand: brand, make: make , name: name });
+        return fetch(URL+ "/api/harbour/add", options)
+            .then(handleHttpErrors)
+            .then(res => updateAction(res)) 
+            .catch((err) =>
+            {
+                if (err.status)
+                {
+                    err.fullError.then((e) => setErrorMessage(e.code + ': ' + e.message));
+                } else
+                {
+                    setErrorMessage('Network error');
+                }
+            });
+    }
+
+    const EditBoat = (brand, make,name ,updateAction, setErrorMessage) =>
+    {
+        const options = makeOptions("put", true, { brand: brand, make: make , name: name });
+        return fetch(URL+ "/api/harbour/", options)
+            .then(handleHttpErrors)
+            .then(res => updateAction(res)) 
+            .catch((err) =>
+            {
+                if (err.status)
+                {
+                    err.fullError.then((e) => setErrorMessage(e.code + ': ' + e.message));
+                } else
+                {
+                    setErrorMessage('Network error');
+                }
+            });
+    }
+
+
+
+    const DeleteBoat = (b_id ,updateAction, setErrorMessage) =>
+    {
+        const options = makeOptions("delete", true, {id: b_id });
+        return fetch(URL+ "/api/harbour/"+b_id, options)
+            .then(handleHttpErrors)
+            .then(res => updateAction(res)) 
+            .catch((err) =>
+            {
+                if (err.status)
+                {
+                    err.fullError.then((e) => setErrorMessage(e.code + ': ' + e.message));
+                } else
+                {
+                    setErrorMessage('Network error');
+                }
+            });
+    }
+
 
     // Security funktionalitet
 
@@ -121,6 +178,9 @@ let apiFacade = () =>
         logout,
         getUserRoles,
         hasUserAccess,
+        AddBoat,
+        DeleteBoat,
+        EditBoat,
     }
 
 }

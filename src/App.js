@@ -1,17 +1,19 @@
 import './App.css';
 import Header from './components/Header.jsx';
 import Home from './components/Home.jsx';
-import Element3 from './components/Element3.jsx';
-import AdminPage from './components/AdminPage';
+import BoatsByHName from './components/BoatsByHName.jsx';
+import BoatsModify from './components/BoatsModify';
 import NoMatch from './components/NoMatch.jsx';
-import facade from './facade';
+import facade from './apiFacade';
 import { Container, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Element2 from './components/Element2.jsx';
+import Boats from './components/Boats.jsx';
 import SignIn from './components/SignIn';
-import Element1 from './components/Element1.jsx';
+import Oners from './components/Oners';
+import OwnersByBName from './components/OwnersByBName';
+import AddBoat from './components/AddBoat';
 
 
 
@@ -42,21 +44,29 @@ function App() {
             setErrorMessage={setErrorMessage}
             />
             </Route>
-          <Route path="/element1">
+          <Route path="/oners">
             {facade.hasUserAccess('user', loggedIn) && 
-              <Element1/>}
+              <Oners facade={facade} errorMessage={errorMessage} setErrorMessage={setErrorMessage}/>}
           </Route>
-          <Route path="/element2">
+          <Route path="/boats">
             {facade.hasUserAccess('user', loggedIn) && 
-              <Element2/>}
+              <Boats  facade={facade} setErrorMessage={setErrorMessage} errorMessage={errorMessage} />}
           </Route>
-          <Route path="/element3">
+          <Route path="/boatsByHName">
             {facade.hasUserAccess('user', loggedIn) && 
-              <Element3/>}
+              <BoatsByHName facade={facade} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />}
           </Route>
-          <Route path="/adminpage">
+          <Route path="/onwesByBName">
+            {facade.hasUserAccess('user', loggedIn) && 
+              <OwnersByBName facade={facade} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />}
+          </Route>
+          <Route path="/boatsmodify">
             {facade.hasUserAccess('admin', loggedIn) && 
-              <AdminPage />}
+              <BoatsModify facade={facade} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />}
+          </Route>
+          <Route path="/addBoat">
+            {facade.hasUserAccess('admin', loggedIn) && 
+              <AddBoat facade={facade} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />}
           </Route>
           <Route path="*">
             <NoMatch />
